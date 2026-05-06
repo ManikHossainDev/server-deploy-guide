@@ -8,7 +8,9 @@ import {
 import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { GuidePreferencesProvider } from "@/contexts/guide-preferences";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { bn } from "@/lib/i18n/bn";
+import { getMetadataBase, seoKeywords } from "@/lib/seo";
 
 const anekBangla = Anek_Bangla({
   variable: "--font-anek-bangla",
@@ -27,27 +29,75 @@ const ibmMono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
+const metadataBase = getMetadataBase();
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  ),
+  metadataBase,
   title: {
     default: bn.meta.title,
     template: "%s — Server Deploy Guide",
   },
   description: bn.meta.description,
+  icons: {
+    icon: "/favicon.ico",
+  },
+  applicationName: "Server Deploy Guide",
+  keywords: [...seoKeywords],
+  authors: [{ name: "Server Deploy Guide" }],
+  creator: "Server Deploy Guide",
+  publisher: "Server Deploy Guide",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  referrer: "origin-when-cross-origin",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
+    type: "website",
+    url: metadataBase.href,
+    siteName: "Server Deploy Guide",
     title: bn.meta.title,
     description: bn.meta.description,
-    type: "website",
     locale: "bn_BD",
     alternateLocale: ["en_US"],
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Server Deploy Guide",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: bn.meta.title,
     description: bn.meta.description,
+    ...(process.env.NEXT_PUBLIC_TWITTER_SITE
+      ? { site: process.env.NEXT_PUBLIC_TWITTER_SITE }
+      : {}),
+    ...(process.env.NEXT_PUBLIC_TWITTER_CREATOR
+      ? { creator: process.env.NEXT_PUBLIC_TWITTER_CREATOR }
+      : {}),
   },
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? {
+        verification: {
+          google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+        },
+      }
+    : {}),
 };
 
 export default function RootLayout({
@@ -65,6 +115,7 @@ export default function RootLayout({
       <body
         className={`${anekBangla.variable} ${quicksand.variable} ${ibmMono.variable} min-h-screen bg-background antialiased`}
       >
+        <JsonLd />
         <Script
           id="guide-theme-init"
           strategy="beforeInteractive"
