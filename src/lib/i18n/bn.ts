@@ -13,6 +13,7 @@ export const bn = {
     contributeTab: "অবদান",
     githubAria: "GitHub-এ রিপোজিটরি দেখুন",
     githubTab: "গিটহাব",
+    githubStarsCount: "{n} স্টার",
   },
   sidebar: {
     footerHint: "স্ক্রল করলে অগ্রগতি ও চেকমার্ক আপডেট হয়।",

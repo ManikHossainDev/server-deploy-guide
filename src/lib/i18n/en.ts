@@ -13,6 +13,7 @@ export const en = {
     contributeTab: "Contribute",
     githubAria: "View repository on GitHub",
     githubTab: "GitHub",
+    githubStarsCount: "{n} stars",
   },
   sidebar: {
     footerHint: "Progress and checkmarks update as you scroll.",

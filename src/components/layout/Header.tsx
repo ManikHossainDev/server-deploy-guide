@@ -9,7 +9,7 @@ import { MobileNav } from "./MobileNav";
 import type { GuideSection } from "@/types/guide";
 import { cn } from "@/lib/utils";
 import { normalizeGithubRepo } from "@/lib/github-repo";
-import { GithubMark } from "@/components/icons/GithubMark";
+import { GithubRepoHeaderLink } from "@/components/layout/GithubRepoHeaderLink";
 
 const GITHUB_REPO =
   normalizeGithubRepo(process.env.NEXT_PUBLIC_GITHUB_REPO) ?? "";
@@ -40,18 +40,7 @@ export function Header({ sections }: { sections: GuideSection[] }) {
             <Users className="size-3.5 shrink-0" aria-hidden />
             <span className="hidden sm:inline">{t.nav.contributeTab}</span>
           </Link>
-          {GITHUB_REPO && (
-            <a
-              href={`https://github.com/${GITHUB_REPO}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center rounded-md border border-border bg-muted/40 p-1.5 text-muted-foreground transition-colors hover:text-foreground sm:px-2 sm:py-1.5"
-              title={t.nav.githubAria}
-              aria-label={t.nav.githubAria}
-            >
-              <GithubMark className="size-4" />
-            </a>
-          )}
+          {GITHUB_REPO ? <GithubRepoHeaderLink repo={GITHUB_REPO} /> : null}
           <Button
             type="button"
             variant="outline"

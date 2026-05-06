@@ -19,6 +19,7 @@ import { SectionTierIcon } from "@/components/guide/SectionTierPanel";
 import { cn } from "@/lib/utils";
 import type { SectionTier } from "@/types/guide";
 import { normalizeGithubRepo } from "@/lib/github-repo";
+import { useGithubRepoStats } from "@/hooks/useGithubRepoStats";
 
 const GITHUB_REPO =
   normalizeGithubRepo(process.env.NEXT_PUBLIC_GITHUB_REPO) ?? "";
@@ -26,6 +27,7 @@ const GITHUB_REPO =
 export function MobileNav({ sections }: { sections: GuideSection[] }) {
   const [open, setOpen] = React.useState(false);
   const { lang, t } = useLanguage();
+  const ghStats = useGithubRepoStats();
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -72,15 +74,29 @@ export function MobileNav({ sections }: { sections: GuideSection[] }) {
               href={`https://github.com/${GITHUB_REPO}`}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={t.nav.githubAria}
-              title={t.nav.githubAria}
+              aria-label={
+                ghStats != null
+                  ? `${t.nav.githubAria} · ${t.nav.githubStarsCount.replace("{n}", String(ghStats.stars))}`
+                  : t.nav.githubAria
+              }
+              title={
+                ghStats != null
+                  ? `${t.nav.githubAria} · ${t.nav.githubStarsCount.replace("{n}", String(ghStats.stars))}`
+                  : t.nav.githubAria
+              }
               className={cn(
                 buttonVariants({ variant: "outline", size: "sm" }),
                 "border-border bg-muted/30 font-mono text-xs text-muted-foreground hover:text-foreground",
               )}
             >
               <GithubMark className="size-3.5 shrink-0" />
-              {t.nav.githubTab}
+              <span className="tabular-nums">{t.nav.githubTab}</span>
+              {ghStats != null ? (
+                <span className="tabular-nums text-muted-foreground/90">
+                  {" · "}
+                  {ghStats.stars.toLocaleString()}
+                </span>
+              ) : null}
             </a>
           ) : null}
         </div>
