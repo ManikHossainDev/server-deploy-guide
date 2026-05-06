@@ -9,6 +9,10 @@ export const en = {
     sections: "Sections",
     openMenu: "Open menu",
     closeMenu: "Close",
+    contributorsAria: "Contributors and how to contribute",
+    contributeTab: "Contribute",
+    githubAria: "View repository on GitHub",
+    githubTab: "GitHub",
   },
   sidebar: {
     footerHint: "Progress and checkmarks update as you scroll.",
@@ -81,5 +85,34 @@ export const en = {
     light: "Light",
     dark: "Dark",
     toggleAria: "Toggle light and dark mode",
+  },
+  contributorsPage: {
+    backToGuide: "← Server Deploy Guide",
+    pageTitle: "Contributors",
+    intro:
+      "Everyone who improved this guide — command fixes, new sections, translations, or any pull request.",
+    howToTitle: "How to contribute",
+    steps: [
+      "Fork this repo on GitHub.",
+      "Find content files under src/lib/content/.",
+      "Fix wrong commands, add missing sections, or improve translations.",
+      "Open a pull request and briefly describe your change.",
+    ],
+    contentFilesLabel: "Content files:",
+    contentFilesThrough: "through",
+    contentFilesSuffix:
+      "— edit the bn and en fields of each section separately.",
+    viewGithub: "View on GitHub",
+    forkContribute: "Fork & contribute",
+    reportIssue: "Report an issue",
+    beFirstContributor: "Be the first contributor",
+    emptyNoContributors: "No contributors found yet — be the first one!",
+    emptySetRepo:
+      "Set NEXT_PUBLIC_GITHUB_REPO=owner/repo in .env.local to list contributors.",
+    contributorsSectionTitle: "Contributors",
+    contributorCountOne: "1 contributor",
+    contributorCountMany: "{n} contributors",
+    commitOne: "1 commit",
+    commitMany: "{n} commits",
   },
 } as const;

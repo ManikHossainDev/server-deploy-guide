@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Sheet,
@@ -9,13 +10,18 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, Users } from "lucide-react";
+import { GithubMark } from "@/components/icons/GithubMark";
 import type { GuideSection } from "@/types/guide";
 import { useLanguage } from "@/hooks/useLanguage";
 import { PathSelector } from "@/components/guide/PathSelector";
 import { SectionTierIcon } from "@/components/guide/SectionTierPanel";
 import { cn } from "@/lib/utils";
 import type { SectionTier } from "@/types/guide";
+import { normalizeGithubRepo } from "@/lib/github-repo";
+
+const GITHUB_REPO =
+  normalizeGithubRepo(process.env.NEXT_PUBLIC_GITHUB_REPO) ?? "";
 
 export function MobileNav({ sections }: { sections: GuideSection[] }) {
   const [open, setOpen] = React.useState(false);
@@ -37,10 +43,47 @@ export function MobileNav({ sections }: { sections: GuideSection[] }) {
         className="h-[85vh] border-t border-border bg-background p-0"
       >
         <SheetHeader className="border-b border-border px-4 py-3 text-left">
-          <SheetTitle className="font-mono text-base text-foreground">
+          <SheetTitle
+            className={cn(
+              "text-base text-foreground",
+              lang === "bn" ? "font-bengali font-semibold" : "font-mono",
+            )}
+          >
             {t.nav.sections}
           </SheetTitle>
         </SheetHeader>
+        <div className="flex flex-wrap gap-2 border-b border-border px-4 py-2.5">
+          <Link
+            href="/contributors"
+            onClick={() => setOpen(false)}
+            aria-label={t.nav.contributorsAria}
+            title={t.nav.contributorsAria}
+            className={cn(
+              buttonVariants({ variant: "outline", size: "sm" }),
+              "border-border bg-muted/30 font-mono text-xs text-muted-foreground hover:text-foreground",
+              lang === "bn" && "font-bengali",
+            )}
+          >
+            <Users className="size-3.5 shrink-0" aria-hidden />
+            {t.nav.contributeTab}
+          </Link>
+          {GITHUB_REPO ? (
+            <a
+              href={`https://github.com/${GITHUB_REPO}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t.nav.githubAria}
+              title={t.nav.githubAria}
+              className={cn(
+                buttonVariants({ variant: "outline", size: "sm" }),
+                "border-border bg-muted/30 font-mono text-xs text-muted-foreground hover:text-foreground",
+              )}
+            >
+              <GithubMark className="size-3.5 shrink-0" />
+              {t.nav.githubTab}
+            </a>
+          ) : null}
+        </div>
         <div className="flex h-[calc(85vh-3.5rem)] flex-col">
           <div className="border-b border-border p-4">
             <PathSelector />

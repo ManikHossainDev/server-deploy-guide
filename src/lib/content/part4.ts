@@ -1,6 +1,5 @@
 import type { GuideSection } from "@/types/guide";
 
-/** রেফারেন্স — PM2, ডকার, systemd, Nginx ইত্যাদি কমান্ড এক জায়গায় (কল্যাপসিবল)। */
 export const guideSectionsPart4: GuideSection[] = [
   {
     id: "section-16",
@@ -108,6 +107,38 @@ npm i -g pm2@latest && pm2 update
 
 # ecosystem example: instances : "max" or number for cluster mode
 pm2 scale api 4`,
+              },
+            ],
+          },
+          {
+            type: "collapsible",
+            summaryBn: "▶ লগ রোটেশন (pm2-logrotate) — প্রোডাকশনে জরুরি",
+            summaryEn: "▶ Log rotation (pm2-logrotate) — important in production",
+            body: [
+              {
+                type: "p",
+                bn: "প্রোডাকশনে PM2 লগ ফাইল বাড়তে বাড়তে ডিস্ক ভরে যায় — pm2-logrotate মডিউল স্বয়ংক্রিয় কেটে রাখে।",
+                en: "Without rotation PM2 log files grow until disk is full — pm2-logrotate handles this automatically.",
+              },
+              {
+                type: "code",
+                lang: "bash",
+                code: `pm2 install pm2-logrotate
+
+# ১০ MB-এর বেশি হলে নতুন ফাইলে রোটেট
+pm2 set pm2-logrotate:max_size 10M
+
+# ৭টি পুরনো ফাইল রাখবে, বাকি মুছবে
+pm2 set pm2-logrotate:retain 7
+
+# gzip কম্প্রেস করে রাখা
+pm2 set pm2-logrotate:compress true
+
+# প্রতিদিন মাঝরাতে রোটেট
+pm2 set pm2-logrotate:rotateInterval '0 0 * * *'
+
+# বর্তমান সেটিংস দেখুন
+pm2 get pm2-logrotate`,
               },
             ],
           },

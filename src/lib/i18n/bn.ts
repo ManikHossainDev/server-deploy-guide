@@ -9,6 +9,10 @@ export const bn = {
     sections: "সেকশনসমূহ",
     openMenu: "মেনু খুলুন",
     closeMenu: "বন্ধ",
+    contributorsAria: "অবদানকারী ও কীভাবে অবদান রাখবেন",
+    contributeTab: "অবদান",
+    githubAria: "GitHub-এ রিপোজিটরি দেখুন",
+    githubTab: "গিটহাব",
   },
   sidebar: {
     footerHint: "স্ক্রল করলে অগ্রগতি ও চেকমার্ক আপডেট হয়।",
@@ -81,5 +85,35 @@ export const bn = {
     light: "লাইট",
     dark: "ডার্ক",
     toggleAria: "লাইট ও ডার্ক মোড বদলান",
+  },
+  contributorsPage: {
+    backToGuide: "← সার্ভার ডেপ্লয় গাইড",
+    pageTitle: "অবদানকারী",
+    intro:
+      "এই গাইড উন্নত করতে যারা সময় দিয়েছেন — command ঠিক করা, নতুন section, অনুবাদ, বা যেকোনো pull request।",
+    howToTitle: "কীভাবে অবদান রাখবেন",
+    steps: [
+      "GitHub-এ এই রিপো Fork করুন।",
+      "src/lib/content/ ফোল্ডারে কনটেন্ট ফাইল খুঁজুন।",
+      "ভুল command ঠিক করুন, নতুন section যোগ করুন, বা অনুবাদ উন্নত করুন।",
+      "Pull request দিন — কী পরিবর্তন করলেন সংক্ষেপে লিখুন।",
+    ],
+    contentFilesLabel: "কনটেন্ট ফাইল:",
+    contentFilesThrough: "থেকে",
+    contentFilesSuffix:
+      "— প্রতিটি section-এর bn ও en ফিল্ড আলাদাভাবে সম্পাদনা করুন।",
+    viewGithub: "GitHub-এ দেখুন",
+    forkContribute: "Fork করে অবদান",
+    reportIssue: "ইস্যু রিপোর্ট",
+    beFirstContributor: "প্রথম অবদানকারী হন",
+    emptyNoContributors:
+      "এখনও কোনো অবদানকারী নেই — আপনি হতে পারেন প্রথম জন!",
+    emptySetRepo:
+      "অবদানকারী দেখাতে .env.local-এ NEXT_PUBLIC_GITHUB_REPO=owner/repo সেট করুন।",
+    contributorsSectionTitle: "অবদানকারী",
+    contributorCountOne: "১ জন অবদানকারী",
+    contributorCountMany: "{n} জন অবদানকারী",
+    commitOne: "১ কমিট",
+    commitMany: "{n} কমিট",
   },
 } as const;

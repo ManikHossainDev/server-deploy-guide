@@ -34,6 +34,11 @@ Example: one deploy.sh does git pull + build + pm2 reload; Docker uses compose p
             lang: "bash",
             code: `#!/usr/bin/env bash
 set -euo pipefail
+
+# non-interactive SSH-এ ~/.bashrc source হয় না — nvm manually load করতে হবে
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
 APP_DIR="/var/www/backend"
 git -C "$APP_DIR" fetch --all --prune
 git -C "$APP_DIR" checkout main
@@ -287,6 +292,77 @@ docker cp stack-mongo-1:/tmp/dump.gz ./mongo-$(date +%F).gz`,
             code: `0 2 * * * /opt/scripts/backup-mongo.sh
 15 2 * * * /opt/scripts/backup-pg.sh
 30 3 * * * /opt/scripts/offsite-sync.sh`,
+          },
+        ],
+      },
+      {
+        id: "13-4",
+        number: "13.4",
+        titleBn: "অফসাইট সিঙ্ক — S3 / Object Storage",
+        titleEn: "Offsite sync — S3 / object storage",
+        purposeBn:
+          "লোকাল ডাম্প ডিস্ক ফেলে গেলে কাজে আসে না — S3 বা compatible storage-এ sync করলে সত্যিকারের disaster recovery সম্ভব।",
+        purposeEn:
+          "Local dumps disappear with a disk failure; syncing to S3 or object storage makes true disaster recovery possible.",
+        nodes: [
+          {
+            type: "p",
+            bn: "দুটি জনপ্রিয় পদ্ধতি: AWS CLI (S3 সরাসরি) বা rclone (S3, Backblaze B2, Cloudflare R2, Google Cloud Storage — যেকোনো provider)।",
+            en: "Two common approaches: AWS CLI for S3 directly, or rclone which supports any provider (S3, Backblaze B2, Cloudflare R2, GCS, etc.).",
+          },
+          {
+            type: "code",
+            file: "পদ্ধতি ১ — AWS CLI",
+            lang: "bash",
+            code: `# AWS CLI ইনস্টল
+sudo apt -y install awscli
+
+# credentials একবার সেটআপ করুন
+aws configure
+# AWS Access Key ID: YOUR_ACCESS_KEY
+# AWS Secret Access Key: YOUR_SECRET_KEY
+# Default region name: ap-southeast-1
+# Default output format: json`,
+          },
+          {
+            type: "code",
+            file: "/opt/scripts/offsite-sync.sh (AWS CLI)",
+            lang: "bash",
+            code: `#!/usr/bin/env bash
+set -euo pipefail
+BUCKET="your-bucket-name"
+HOST=$(hostname)
+aws s3 sync /backups "s3://$BUCKET/backups/$HOST/" --storage-class STANDARD_IA
+# S3 Lifecycle Rule দিয়ে ৩০ দিনের পুরনো ব্যাকআপ স্বয়ংক্রিয় মুছুন`,
+          },
+          {
+            type: "code",
+            file: "পদ্ধতি ২ — rclone (যেকোনো provider)",
+            lang: "bash",
+            code: `# rclone ইনস্টল
+curl https://rclone.org/install.sh | sudo bash
+
+# interactive config (provider বেছে credentials দিন)
+rclone config`,
+          },
+          {
+            type: "code",
+            file: "/opt/scripts/offsite-sync.sh (rclone)",
+            lang: "bash",
+            code: `#!/usr/bin/env bash
+set -euo pipefail
+# "remote" = rclone config-এ দেওয়া নাম
+rclone sync /backups remote:your-bucket/backups/$(hostname)/`,
+          },
+          {
+            type: "infobox",
+            variant: "warning",
+            titleBn: "Credentials নিরাপদ রাখুন",
+            titleEn: "Keep credentials safe",
+            bodyBn:
+              "AWS credentials `~/.aws/credentials` বা environment variable-এ রাখুন — script-এ hardcode করবেন না। IAM user-এ শুধু S3 bucket-এ PutObject/GetObject/ListBucket permission দিন।",
+            bodyEn:
+              "Store AWS credentials in `~/.aws/credentials` or env vars — never hardcode in scripts. Use an IAM user with only PutObject/GetObject/ListBucket on the target bucket.",
           },
         ],
       },

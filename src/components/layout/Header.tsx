@@ -1,26 +1,57 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Users } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTheme } from "@/hooks/useTheme";
 import { MobileNav } from "./MobileNav";
 import type { GuideSection } from "@/types/guide";
 import { cn } from "@/lib/utils";
+import { normalizeGithubRepo } from "@/lib/github-repo";
+import { GithubMark } from "@/components/icons/GithubMark";
 
+const GITHUB_REPO =
+  normalizeGithubRepo(process.env.NEXT_PUBLIC_GITHUB_REPO) ?? "";
 export function Header({ sections }: { sections: GuideSection[] }) {
   const { lang, setLang, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
+    <header className="sticky top-0 z-100 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-2 px-4">
-        <div className="min-w-0 flex-1">
-          <span className="block truncate font-mono text-sm font-bold text-foreground md:text-base">
+        <div className="relative z-0 min-w-0 flex-1 overflow-hidden">
+          <span
+            className={cn(
+              "block truncate text-sm font-bold text-foreground md:text-base",
+              lang === "bn" ? "font-bengali" : "font-mono",
+            )}
+          >
             {t.meta.title}
           </span>
         </div>
-        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+        <div className="relative z-10 flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <Link
+            href="/contributors"
+            className="flex items-center gap-1.5 rounded-md border border-border bg-muted/40 px-2 py-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground sm:px-2.5"
+            title={t.nav.contributorsAria}
+            aria-label={t.nav.contributorsAria}
+          >
+            <Users className="size-3.5 shrink-0" aria-hidden />
+            <span className="hidden sm:inline">{t.nav.contributeTab}</span>
+          </Link>
+          {GITHUB_REPO && (
+            <a
+              href={`https://github.com/${GITHUB_REPO}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center rounded-md border border-border bg-muted/40 p-1.5 text-muted-foreground transition-colors hover:text-foreground sm:px-2 sm:py-1.5"
+              title={t.nav.githubAria}
+              aria-label={t.nav.githubAria}
+            >
+              <GithubMark className="size-4" />
+            </a>
+          )}
           <Button
             type="button"
             variant="outline"

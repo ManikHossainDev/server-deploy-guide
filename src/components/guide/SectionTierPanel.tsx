@@ -50,7 +50,7 @@ export function SectionTierIcon({
 }
 
 export function SectionTierBadge({ tier }: { tier: SectionTier }) {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
   const label =
     tier === "required"
       ? t.tier.badgeRequired
@@ -61,7 +61,10 @@ export function SectionTierBadge({ tier }: { tier: SectionTier }) {
     <Badge
       variant="outline"
       className={cn(
-        "shrink-0 px-1.5 py-0 font-mono text-[9px] uppercase leading-none tracking-wide",
+        "shrink-0 px-1.5 py-0 text-[9px] leading-none tracking-wide",
+        lang === "bn"
+          ? "font-bengali normal-case font-medium"
+          : "font-mono uppercase",
         tier === "required" &&
           "border-destructive/50 bg-destructive/10 text-destructive dark:border-destructive/40 dark:bg-destructive/15",
         tier === "recommended" &&
@@ -92,7 +95,12 @@ export function SectionTierPanel({ tier }: { tier: SectionTier }) {
     <div className="mt-4 max-w-3xl rounded-md border border-border bg-muted/30 px-3 py-2.5">
       <div className="flex flex-wrap items-center gap-2">
         <SectionTierBadge tier={tier} />
-        <span className="text-xs font-medium text-muted-foreground">
+        <span
+          className={cn(
+            "text-xs font-medium text-muted-foreground",
+            lang === "bn" && "font-bengali",
+          )}
+        >
           {t.tier.panelTitle}
         </span>
       </div>

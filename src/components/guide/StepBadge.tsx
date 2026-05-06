@@ -3,9 +3,10 @@
 import { Badge } from "@/components/ui/badge";
 import type { SectionScope } from "@/types/guide";
 import { useLanguage } from "@/hooks/useLanguage";
+import { cn } from "@/lib/utils";
 
 export function StepBadge({ scope }: { scope: SectionScope }) {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
   const label =
     scope === "both"
       ? t.badges.both
@@ -15,7 +16,12 @@ export function StepBadge({ scope }: { scope: SectionScope }) {
   return (
     <Badge
       variant="outline"
-      className="mt-2 border-border bg-transparent font-mono text-xs uppercase tracking-wide text-muted-foreground"
+      className={cn(
+        "mt-2 border-border bg-transparent text-xs tracking-wide text-muted-foreground",
+        lang === "bn"
+          ? "font-bengali normal-case"
+          : "font-mono uppercase",
+      )}
     >
       {label}
     </Badge>

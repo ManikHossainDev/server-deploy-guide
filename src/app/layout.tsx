@@ -12,7 +12,7 @@ import { bn } from "@/lib/i18n/bn";
 
 const anekBangla = Anek_Bangla({
   variable: "--font-anek-bangla",
-  subsets: ["bengali"],
+  subsets: ["latin", "bengali"],
 });
 
 const quicksand = Quicksand({

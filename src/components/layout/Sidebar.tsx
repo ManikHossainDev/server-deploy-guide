@@ -27,7 +27,14 @@ export function Sidebar({
           className="min-w-0 max-w-full p-4 pr-3"
           aria-label={t.nav.sections}
         >
-          <p className="mb-3 font-mono text-xs uppercase tracking-wide text-muted-foreground">
+          <p
+            className={cn(
+              "mb-3 text-xs tracking-wide text-muted-foreground",
+              lang === "bn"
+                ? "font-bengali font-semibold normal-case"
+                : "font-mono uppercase",
+            )}
+          >
             {t.nav.sections}
           </p>
           <ul className="min-w-0 space-y-1">
